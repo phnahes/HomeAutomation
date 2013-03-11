@@ -44,7 +44,7 @@ void setup() {
   pinMode(light_sensor, INPUT);
   pinMode(ar_cond, OUTPUT);
   
-  analogRead(term_meter);
+  int leitor_analogico = analogRead(term_meter);
   
   digitalWrite(light, LOW);
   digitalWrite(ar_cond, LOW);
@@ -88,7 +88,7 @@ void loop() {
              temperatura = 2,5 x medicao porta  
           */
           
-          float temperatura = 2.5 * term_meter;
+          float temperatura = 2.5 * leitor_analogico;
           
           client.println("Temperatura: ");
           client.println(temperatura);
