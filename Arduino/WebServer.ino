@@ -71,6 +71,15 @@ void loop() {
           client.println("</html>");
           break;
         }
+// Recurso para ler uma subpagina =)
+//
+//	else if (HTTP_req.indexOf("GET /page2.htm") > -1) {
+//		client.println("HTTP/1.1 200 OK");
+//		client.println("Content-Type: text/html");
+//		client.println("Connnection: close");
+//		client.println();
+//		webFile = SD.open("page2.htm");        // open web page file
+//	}
         if (c == '\n') {
           // you're starting a new line
           currentLineIsBlank = true;
