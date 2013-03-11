@@ -77,14 +77,22 @@ void loop() {
                     // add a meta refresh tag, so the browser pulls again every 5 seconds:
           client.println("<meta http-equiv=\"refresh\" content=\"5\">");
           // output the value of each analog input pin
-          for (int analogChannel = 0; analogChannel < 6; analogChannel++) {
-            int sensorReading = analogRead(analogChannel);
-            client.print("analog input ");
-            client.print(analogChannel);
-            client.print(" is ");
-            client.print(sensorReading);
-            client.println("<br />");       
-          }
+          
+          
+          
+          /*
+             0 - 1023 => 0 - 5v
+             à cada 1 = 4mV
+             leitura do sensor => 1°C = 10mV
+             
+             temperatura = 2,5 x medicao porta  
+          */
+          
+          float temperatura = 2.5 * term_meter;
+          
+          client.println("Temperatura: ");
+          client.println(temperatura);
+          
           client.println("</html>");
           break;
         }
@@ -144,6 +152,7 @@ void loop() {
     
   }
 }
+
 
 // Recurso para ler uma subpagina =)
 //
