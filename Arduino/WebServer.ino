@@ -16,6 +16,7 @@ IPAddress ip(192,168,0, 177);
 
 String pega_msg;
 int light_sensor = 7;
+
 int term_meter = 1;
 
 int light = 20;
@@ -43,8 +44,6 @@ void setup() {
   pinMode(light, OUTPUT);
   pinMode(light_sensor, INPUT);
   pinMode(ar_cond, OUTPUT);
-  
-  int leitor_analogico = analogRead(term_meter);
   
   digitalWrite(light, LOW);
   digitalWrite(ar_cond, LOW);
@@ -88,7 +87,7 @@ void loop() {
              temperatura = 2,5 x medicao porta  
           */
           
-          float temperatura = 2.5 * leitor_analogico;
+          float temperatura = 2.5 * analogRead(term_meter);
           
           client.println("Temperatura: ");
           client.println(temperatura);
@@ -152,8 +151,6 @@ void loop() {
     
   }
 }
-
-
 // Recurso para ler uma subpagina =)
 //
 //	else if (HTTP_req.indexOf("GET /page2.htm") > -1) {
