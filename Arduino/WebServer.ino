@@ -1,7 +1,7 @@
 /*
   Web Server
  
- Exemplo, para ser modificado...
+PROGRAMA TESTE
  
  */
 
@@ -13,6 +13,13 @@
 byte mac[] = { 
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 IPAddress ip(192,168,0, 177);
+
+String pega_msg;
+int light_sensor = 7;
+int term_meter = 1;
+
+int light = 20;
+int ar_cond = 21;
 
 // Initialize the Ethernet server library
 // with the IP address and port you want to use 
@@ -32,6 +39,15 @@ void setup() {
   server.begin();
   Serial.print("server is at ");
   Serial.println(Ethernet.localIP());
+  
+  pinMode(light, OUTPUT);
+  pinMode(light_sensor, INPUT);
+  pinMode(ar_cond, OUTPUT);
+  
+  analogRead(term_meter);
+  
+  digitalWrite(light, LOW);
+  digitalWrite(ar_cond, LOW);
 }
 
 
@@ -45,6 +61,7 @@ void loop() {
     while (client.connected()) {
       if (client.available()) {
         char c = client.read();
+        pega_msg.concat(c);
         Serial.write(c);
         // if you've gotten to the end of the line (received a newline
         // character) and the line is blank, the http request has ended,
@@ -71,15 +88,6 @@ void loop() {
           client.println("</html>");
           break;
         }
-// Recurso para ler uma subpagina =)
-//
-//	else if (HTTP_req.indexOf("GET /page2.htm") > -1) {
-//		client.println("HTTP/1.1 200 OK");
-//		client.println("Content-Type: text/html");
-//		client.println("Connnection: close");
-//		client.println();
-//		webFile = SD.open("page2.htm");        // open web page file
-//	}
         if (c == '\n') {
           // you're starting a new line
           currentLineIsBlank = true;
@@ -95,5 +103,55 @@ void loop() {
     // close the connection:
     client.stop();
     Serial.println("client disonnected");
+ 
+ 
+ 
+ /* ||||||||||||||||||||||||||||||||||||||||||||
+              DES/ATIVAÇÃO DE PORTAS
+    |||||||||||||||||||||||||||||||||||||||||||| */
+ 
+    
+    //acende Luz
+    if ((pega_msg == "?luz=1") || (!light_sensor)){
+    
+        digitalWrite(light, HIGH);
+    
+    }
+    
+    //apaga Luz
+    if ((pega_msg == "?luz=0") || (light_sensor)){
+    
+        digitalWrite(light, LOW);
+    
+    }
+    
+    
+    
+    //ativa AR CONDICIONADO
+    if (pega_msg == "?ar=1"){
+    
+        digitalWrite(ar_cond, HIGH);
+    
+    }
+    
+    //desativa AR CONDICIONADO
+    if (pega_msg == "?ar=0"){
+    
+        digitalWrite(ar_cond, LOW);
+    
+    }
+    
+    
   }
 }
+
+// Recurso para ler uma subpagina =)
+//
+//	else if (HTTP_req.indexOf("GET /page2.htm") > -1) {
+//		client.println("HTTP/1.1 200 OK");
+//		client.println("Content-Type: text/html");
+//		client.println("Connnection: close");
+//		client.println();
+//		webFile = SD.open("page2.htm");        // open web page file
+//	}
+
