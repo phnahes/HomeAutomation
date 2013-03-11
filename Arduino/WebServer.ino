@@ -14,13 +14,15 @@ byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 IPAddress ip(192,168,0, 177);
 
-String pega_msg;
 int light_sensor = 7;
 
 int term_meter = 1;
 
-int light = 20;
-int ar_cond = 21;
+int light = 8;
+int ar_cond = 9;
+
+int ativa_luz = 0;
+int ativa_ar = 0;
 
 // Initialize the Ethernet server library
 // with the IP address and port you want to use 
@@ -41,11 +43,11 @@ void setup() {
   Serial.print("server is at ");
   Serial.println(Ethernet.localIP());
   
-  pinMode(light, OUTPUT);
+  pinMode(8, OUTPUT);
   pinMode(light_sensor, INPUT);
   pinMode(ar_cond, OUTPUT);
   
-  digitalWrite(light, LOW);
+  digitalWrite(8, LOW);
   digitalWrite(ar_cond, LOW);
 }
 
@@ -57,11 +59,19 @@ void loop() {
     Serial.println("new client");
     // an http request ends with a blank line
     boolean currentLineIsBlank = true;
+    String pega_msg;
+    
     while (client.connected()) {
       if (client.available()) {
         char c = client.read();
-        pega_msg.concat(c);
         Serial.write(c);
+        
+         pega_msg.concat(c);
+         if (pega_msg.endsWith("?luz=1")){ ativa_luz = 1; }
+         else if (pega_msg.endsWith("?luz=0")){ ativa_luz = 0; }
+         else if (pega_msg.endsWith("?ar=1")){ ativa_ar = 1; }
+         else if (pega_msg.endsWith("?ar=0")){ ativa_ar = 0; };
+         
         // if you've gotten to the end of the line (received a newline
         // character) and the line is blank, the http request has ended,
         // so you can send a reply
@@ -77,21 +87,62 @@ void loop() {
           client.println("<meta http-equiv=\"refresh\" content=\"5\">");
           // output the value of each analog input pin
           
+  
+   /* ||||||||||||||||||||||||||||||||||||||||||||
+              DES/ATIVAÇÃO DE PORTAS
+    |||||||||||||||||||||||||||||||||||||||||||| */
+ 
+    
+    //acende Luz
+    if (ativa_luz == 1){
+    
+        client.println("<br /> LUZ ACESA <br />");
+        digitalWrite(8, HIGH);
+    
+    }
+    
+    //apaga Luz
+    if (ativa_luz == 0){
+    
+        client.println("<br /> ALUZ APAGADA <br />");
+        digitalWrite(8, LOW);
+    
+    }
+    
+    
+    
+    //ativa AR CONDICIONADO
+    if (ativa_ar == 1){
+    
+        digitalWrite(ar_cond, HIGH);
+    
+    }
+    
+    //desativa AR CONDICIONADO
+    if (ativa_ar == 0){
+    
+        digitalWrite(ar_cond, LOW);
+    
+    }
+ 
           
           
           /*
              0 - 1023 => 0 - 5v
-             à cada 1 = 4mV
+             à cada 1 = 204,6
              leitura do sensor => 1°C = 10mV
              
-             temperatura = 2,5 x medicao porta  
+             temperatura = (medicao porta/204,6)/100  
           */
           
-          float temperatura = 2.5 * analogRead(term_meter);
+          float temperatura = (analogRead(term_meter))/2.046;
           
           client.println("Temperatura: ");
           client.println(temperatura);
-          
+          client.println("<br />");
+          client.println(pega_msg);
+          client.println("<br />");
+          client.println(ativa_luz);
           client.println("</html>");
           break;
         }
@@ -113,40 +164,7 @@ void loop() {
  
  
  
- /* ||||||||||||||||||||||||||||||||||||||||||||
-              DES/ATIVAÇÃO DE PORTAS
-    |||||||||||||||||||||||||||||||||||||||||||| */
- 
-    
-    //acende Luz
-    if ((pega_msg.endsWith("?luz=1")) || (!light_sensor)){
-    
-        digitalWrite(light, HIGH);
-    
-    }
-    
-    //apaga Luz
-    if ((pega_msg.endsWith("?luz=0")) || (light_sensor)){
-    
-        digitalWrite(light, LOW);
-    
-    }
-    
-    
-    
-    //ativa AR CONDICIONADO
-    if (pega_msg.endsWith("?ar=1")){
-    
-        digitalWrite(ar_cond, HIGH);
-    
-    }
-    
-    //desativa AR CONDICIONADO
-    if (pega_msg.endsWith("?ar=0")){
-    
-        digitalWrite(ar_cond, LOW);
-    
-    }
+
     
     
   }
