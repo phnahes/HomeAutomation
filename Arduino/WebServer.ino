@@ -112,14 +112,14 @@ void loop() {
  
     
     //acende Luz
-    if ((pega_msg == "?luz=1") || (!light_sensor)){
+    if ((pega_msg.endsWith("?luz=1")) || (!light_sensor)){
     
         digitalWrite(light, HIGH);
     
     }
     
     //apaga Luz
-    if ((pega_msg == "?luz=0") || (light_sensor)){
+    if ((pega_msg.endsWith("?luz=0")) || (light_sensor)){
     
         digitalWrite(light, LOW);
     
@@ -128,14 +128,14 @@ void loop() {
     
     
     //ativa AR CONDICIONADO
-    if (pega_msg == "?ar=1"){
+    if (pega_msg.endsWith("?ar=1")){
     
         digitalWrite(ar_cond, HIGH);
     
     }
     
     //desativa AR CONDICIONADO
-    if (pega_msg == "?ar=0"){
+    if (pega_msg.endsWith("?ar=0")){
     
         digitalWrite(ar_cond, LOW);
     
