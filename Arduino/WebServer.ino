@@ -69,8 +69,8 @@ void loop() {
          pega_msg.concat(c);
          if (pega_msg.endsWith("?luz=1")){ digitalWrite(light, HIGH);};
          if (pega_msg.endsWith("?luz=0")){ digitalWrite(light, LOW); };
-         if (pega_msg.endsWith("/ar=1")){ digitalWrite(ar_cond, HIGH); };
-         if (pega_msg.endsWith("/ar=0")){ digitalWrite(ar_cond, LOW); };
+         if (pega_msg.endsWith("?ar=1")){ digitalWrite(ar_cond, HIGH); };
+         if (pega_msg.endsWith("?ar=0")){ digitalWrite(ar_cond, LOW); };
          
         // if you've gotten to the end of the line (received a newline
         // character) and the line is blank, the http request has ended,
