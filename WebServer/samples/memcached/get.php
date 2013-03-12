@@ -4,7 +4,7 @@
 // Exemplo de GET no memcached
 //
 
-require("memcached.php"); // Inclui biblioteca de conexao com memcached
+require("lib/memcached.php"); // Inclui biblioteca de conexao com memcached
 
 $prefix = "web_"; // Prefixo para chave
 

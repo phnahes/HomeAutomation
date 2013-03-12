@@ -4,7 +4,7 @@
 // Exemplo de SET no memcached
 //
 
-require("memcached.php");
+require("lib/memcached.php"); // Inclui biblioteca de conexao com memcached
 
 $name = $_GET['name']; // Nome da Chave
 $value = $_GET['value']; // Valor da Chave
