@@ -47,7 +47,7 @@ void setup() {
   pinMode(light_sensor, INPUT);
   pinMode(ar_cond, OUTPUT);
   
-  digitalWrite(8, LOW);
+  digitalWrite(light, LOW);
   digitalWrite(ar_cond, LOW);
 }
 
@@ -67,10 +67,10 @@ void loop() {
         Serial.write(c);
         
          pega_msg.concat(c);
-         if (pega_msg.endsWith("?luz=1")){ ativa_luz = 1; }
-         else if (pega_msg.endsWith("?luz=0")){ ativa_luz = 0; }
-         else if (pega_msg.endsWith("?ar=1")){ ativa_ar = 1; }
-         else if (pega_msg.endsWith("?ar=0")){ ativa_ar = 0; };
+         if (pega_msg.endsWith("?luz=1")){ digitalWrite(light, HIGH);};
+         if (pega_msg.endsWith("?luz=0")){ digitalWrite(light, LOW); };
+         if (pega_msg.endsWith("/ar=1")){ digitalWrite(ar_cond, HIGH); };
+         if (pega_msg.endsWith("/ar=0")){ digitalWrite(ar_cond, LOW); };
          
         // if you've gotten to the end of the line (received a newline
         // character) and the line is blank, the http request has ended,
@@ -86,46 +86,7 @@ void loop() {
                     // add a meta refresh tag, so the browser pulls again every 5 seconds:
           client.println("<meta http-equiv=\"refresh\" content=\"5\">");
           // output the value of each analog input pin
-          
-  
-   /* ||||||||||||||||||||||||||||||||||||||||||||
-              DES/ATIVAÇÃO DE PORTAS
-    |||||||||||||||||||||||||||||||||||||||||||| */
- 
-    
-    //acende Luz
-    if (ativa_luz == 1){
-    
-        client.println("<br /> LUZ ACESA <br />");
-        digitalWrite(8, HIGH);
-    
-    }
-    
-    //apaga Luz
-    if (ativa_luz == 0){
-    
-        client.println("<br /> ALUZ APAGADA <br />");
-        digitalWrite(8, LOW);
-    
-    }
-    
-    
-    
-    //ativa AR CONDICIONADO
-    if (ativa_ar == 1){
-    
-        digitalWrite(ar_cond, HIGH);
-    
-    }
-    
-    //desativa AR CONDICIONADO
-    if (ativa_ar == 0){
-    
-        digitalWrite(ar_cond, LOW);
-    
-    }
- 
-          
+                   
           
           /*
              0 - 1023 => 0 - 5v
@@ -139,10 +100,7 @@ void loop() {
           
           client.println("Temperatura: ");
           client.println(temperatura);
-          client.println("<br />");
-          client.println(pega_msg);
-          client.println("<br />");
-          client.println(ativa_luz);
+          client.println(" &deg;C");
           client.println("</html>");
           break;
         }
