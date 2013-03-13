@@ -5,11 +5,6 @@ digraph G {
 	fontsize=32;
 	labelloc=t;
 
-//		subgraph clustera {
-//			style=filled;
-//			fillcolor=white;
-//			color=black;
-
 			usuario[label=Usuario, shape=circle, style=filled, fillcolor=red];
 			subgraph cluster1 {
 				style=filled;
@@ -18,10 +13,11 @@ digraph G {
 				fillcolor=white;
 				label="Servidor\n Cloud Computing";
 				nginx[label="Nginx", shape=box3d, style=filled, fillcolor=blue, fontcolor=white];
-				php[label="PHP", shape=box3d, style=filled, fillcolor=purple, fontcolor=white];
+
 				memcached[label="Memcached", shape=box3d, style=filled, fillcolor=tomato];
 				mysql[label="Mysql", shape=box3d, style=filled, fillcolor=lightsalmon];
-
+				
+				doc[label="Arquivo de\nTransicao\nMemoria", shape=egg, style=filled, fillcolor=pink];
 				admin[label="Administracao\n(PHP)", shape=box, style=filled, fillcolor=springgreen];
 				pooling[label="Cron\nPooling\n(PHP)",shape=box, style=filled, fillcolor=navy, fontcolor=white];
 				{ 
@@ -32,7 +28,8 @@ digraph G {
 					callagent[label="call_agent.php"];
 				}
 			}
-			
+
+
 			subgraph cluster2 {
 				style=filled;
 				color=tomato;
@@ -55,24 +52,27 @@ digraph G {
 			//Arduino
 			arduino->{dev1 dev2 dev3 sensor};
 			status->arduino;
-			
 
 			//Servidor
+			center[shape=point];
 			usuario->nginx[constraint=true];
 
 			pooling->{ getstatus parsestatus setstatus callagent }[label="Inclui componente:", fontcolor=red, color=red, constraint=true];
-			setstatus->memcached[constraint=true];
-			callagent->memcached[constraint=true];
-			getstatus->status[constraint=true];	
+			
+			getstatus->status[label="1) GET\nObtem Pagina\nde Status", constraint=true];
+			getstatus->doc[label="2) Guarda conteudo"];
+			parsestatus->doc[label="3) Parseia Conteudo\ne obtem valores"];
+			setstatus->memcached[label="4) Guarda Valores", constraint=true];
 
-			admin->php[constraint=true];
-			php->pooling[constraint=false];
-			nginx->php[constraint=false];
+			callagent->mysql[label="5) Checa quem\ndeve ser\nligado no momento"];	
+			callagent->memcached[label="6) Obtem Status\do Dispositivo",constraint=true];			
+
+			callagent->center[arrowhead=none, label="7) Executa acao\nGET URL (on/off)"];
+			center->{pgdev1 pgdev2 pgdev3}->arduino;
+
+			admin->mysql;
 			nginx->admin[constraint=true];
-			php->mysql[constraint=true];
 
-			callagent->{pgdev1 pgdev2 pgdev3}->arduino;
 
 		}
-//}
-
+}
