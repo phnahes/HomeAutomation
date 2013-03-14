@@ -25,6 +25,8 @@ int ativa_luz = 0;
 int ativa_ar = 0;
 
 int estado = 0; 
+int luz = 0;
+int ar = 0;
 
 // Initialize the Ethernet server library
 // with the IP address and port you want to use 
@@ -69,10 +71,10 @@ void loop() {
         Serial.write(c);
         
          pega_msg.concat(c);
-         if (pega_msg.endsWith("?luz=1")){ digitalWrite(light, HIGH);};
-         if (pega_msg.endsWith("?luz=0")){ digitalWrite(light, LOW); };
-         if (pega_msg.endsWith("?ar=1")){ digitalWrite(ar_cond, HIGH); };
-         if (pega_msg.endsWith("?ar=0")){ digitalWrite(ar_cond, LOW); };
+         if (pega_msg.endsWith("?luz=1")){ luz = 1; digitalWrite(light, HIGH);};
+         if (pega_msg.endsWith("?luz=0")){ luz = 0; digitalWrite(light, LOW); };
+         if (pega_msg.endsWith("?ar=1")){ ar = 1; digitalWrite(ar_cond, HIGH); };
+         if (pega_msg.endsWith("?ar=0")){ ar = 0; digitalWrite(ar_cond, LOW); };
          if (pega_msg.wndsWith("/status")){ estado = 1; };          
 
 
@@ -90,7 +92,10 @@ void loop() {
                     // add a meta refresh tag, so the browser pulls again every 5 seconds:
           client.println("<meta http-equiv=\"refresh\" content=\"5\">");
           // output the value of each analog input pin
-                   
+ 
+
+
+
     //PAGINA STATUS     
           if (estado == 1){
 
@@ -109,13 +114,22 @@ void loop() {
           client.println(" &deg;C"<br />);
 
           client.println("Dispositivos:<br />");
-          if(luz == 1) client.println("Luz: Acesa<br />");
-          if(luz == 0) client.println("Lu: Apagada<br />");
-          if(digitalRead(light_sensor)){client.println("Luminosidade boa")}
-          else{ client.println("Luminosidade baixa")};
+
+          if(luz == 1) {client.println("Luz: Acesa<br />")}
+          else{ client.println("Lu: Apagada<br />")};
+
+          if(digitalRead(light_sensor)){client.println("Luminosidade boa<br />")}
+          else{ client.println("Luminosidade baixa<br />")};
+
+          if(ar == 1) { client.println("Ar Condicionado: Ligado"); }
+          else{ client.println("Ar Condicionado: Desligado"); };
           
         estado = 0;
         }//FIM PAGINA STATUS
+
+
+
+
 
           client.println("</html>");
           break;
