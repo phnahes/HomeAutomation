@@ -24,6 +24,8 @@ int ar_cond = 9;
 int ativa_luz = 0;
 int ativa_ar = 0;
 
+int estado = 0; 
+
 // Initialize the Ethernet server library
 // with the IP address and port you want to use 
 // (port 80 is default for HTTP):
@@ -43,7 +45,7 @@ void setup() {
   Serial.print("server is at ");
   Serial.println(Ethernet.localIP());
   
-  pinMode(8, OUTPUT);
+  pinMode(light, OUTPUT);
   pinMode(light_sensor, INPUT);
   pinMode(ar_cond, OUTPUT);
   
@@ -71,7 +73,9 @@ void loop() {
          if (pega_msg.endsWith("?luz=0")){ digitalWrite(light, LOW); };
          if (pega_msg.endsWith("?ar=1")){ digitalWrite(ar_cond, HIGH); };
          if (pega_msg.endsWith("?ar=0")){ digitalWrite(ar_cond, LOW); };
-         
+         if (pega_msg.wndsWith("/status")){ estado = 1; };          
+
+
         // if you've gotten to the end of the line (received a newline
         // character) and the line is blank, the http request has ended,
         // so you can send a reply
@@ -87,7 +91,9 @@ void loop() {
           client.println("<meta http-equiv=\"refresh\" content=\"5\">");
           // output the value of each analog input pin
                    
-          
+    //PAGINA STATUS     
+          if (estado == 1){
+
           /*
              0 - 1023 => 0 - 5v
              à cada 1 = 204,6
@@ -100,9 +106,20 @@ void loop() {
           
           client.println("Temperatura: ");
           client.println(temperatura);
-          client.println(" &deg;C");
+          client.println(" &deg;C"<br />);
+
+          client.println("Dispositivos:<br />");
+          if(luz == 1) client.println("Luz: Acesa<br />");
+          if(luz == 0) client.println("Lu: Apagada<br />");
+          if(digitalRead(light_sensor)){client.println("Luminosidade boa")}
+          else{ client.println("Luminosidade baixa")};
+          
+        }//FIM PAGINA STATUS
+
           client.println("</html>");
           break;
+
+
         }
         if (c == '\n') {
           // you're starting a new line
@@ -127,13 +144,4 @@ void loop() {
     
   }
 }
-// Recurso para ler uma subpagina =)
-//
-//	else if (HTTP_req.indexOf("GET /page2.htm") > -1) {
-//		client.println("HTTP/1.1 200 OK");
-//		client.println("Content-Type: text/html");
-//		client.println("Connnection: close");
-//		client.println();
-//		webFile = SD.open("page2.htm");        // open web page file
-//	}
 
