@@ -114,6 +114,7 @@ void loop() {
           if(digitalRead(light_sensor)){client.println("Luminosidade boa")}
           else{ client.println("Luminosidade baixa")};
           
+        estado = 0;
         }//FIM PAGINA STATUS
 
           client.println("</html>");
