@@ -111,7 +111,7 @@ void loop() {
           
           client.println("Temperatura: ");
           client.println(temperatura);
-          client.println(" &deg;C"<br />);
+          client.println(" &deg;C<br />");
 
           client.println("Dispositivos:<br />");
 
