@@ -1,0 +1,3 @@
+deb http://repo/repo x86/
+deb http://repo/repo 3rd/
+

@@ -1,0 +1,33 @@
+Port <%= node[:openssh][:srv_port] %>
+Protocol 2
+SyslogFacility AUTHPRIV
+PermitRootLogin no
+PasswordAuthentication yes
+ChallengeResponseAuthentication no
+KerberosAuthentication no
+GSSAPIAuthentication no
+UsePAM yes
+UseDNS no
+ClientAliveInterval 600
+ClientAliveCountMax 24
+<% if node[:openssh][:lpk] == "yes" %>
+UseLPK yes
+LpkLdapConf <%= node[:openssh][:lpk_ldapconf] %>
+<% end %>
+
+AcceptEnv LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES 
+AcceptEnv LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT 
+AcceptEnv LC_IDENTIFICATION LC_ALL
+
+X11Forwarding <%= node[:openssh][:x11forwarding] %>
+
+PrintMotd <%= node[:openssh][:motd] %>
+
+TCPKeepAlive yes
+
+Subsystem	sftp	<%= node[:openssh][:sshd_libexecpath] %>/sftp-server
+
+<% if node[:openssh][:allow_users] != [] then %>AllowUsers<% @allow_users.each do |allow_user| %> <%= allow_user %><% end -%><% end %>
+<% if node[:openssh][:allow_groups] != [] then %>AllowGroups<% @allow_groups.each do |allow_group| %> <%= allow_group %><% end -%><% end %>
+<% if node[:openssh][:deny_users] != [] then %>DenyUsers<% @deny_users.each do |deny_user| %> <%= deny_user %><% end -%><% end %>
+<% if node[:openssh][:deny_groups] != [] then %>DenyGroups<% @deny_groups.each do |deny_group| %> <%= deny_group %><% end -%><% end %>
