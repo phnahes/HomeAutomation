@@ -1,0 +1,37 @@
+server {
+	listen                80 default_server;
+	server_name           <%= node[:fqdn] %>;
+	server_tokens         off;
+
+	root /data/www/;
+
+	proxy_intercept_errors    on;
+
+	types_hash_max_size     8192;
+
+# gzip
+	gzip                    on;
+	gzip_static             on;
+	gzip_comp_level         6;
+	gzip_min_length         512;
+	gzip_http_version       1.1;
+	gzip_vary               on;
+	gzip_proxied            any;
+	gzip_types              text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+	gzip_buffers            64 16k;
+	gzip_disable            “MSIE [1-6].(?!.*SV1)”;
+
+	location ~ \.php$ {
+		try_files $uri =404;
+		fastcgi_split_path_info ^(.+\.php)(/.+)$;
+		fastcgi_pass  unix:/var/run/php5-fpm.sock;
+		fastcgi_index index.php;
+		include fastcgi_params;
+	}
+
+	location / {
+		index  index.php index.html index.htm;
+		allow all;
+	}
+}
+
