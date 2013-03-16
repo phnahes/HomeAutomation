@@ -1,2 +1,0 @@
-deb http://mirror-ubuntu.nahes.com.br/repo nahes stable
-#deb http://repo.nahes.com.br/<%= node.lsb.codename %> <%=node.chef_environment%>   main
