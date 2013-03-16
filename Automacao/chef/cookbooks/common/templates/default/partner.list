@@ -1,1 +1,0 @@
-deb http://mirror-ubuntu.nahes.com.br/ubuntu-partner <%= node.lsb.codename %> partner
