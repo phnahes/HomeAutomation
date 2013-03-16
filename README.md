@@ -6,5 +6,4 @@ Sistema de Automacao Residencial usando um servidor na nuvem e um Arduino em "St
 Maiores informacoes:
 http://paulonahes.blogspot.com.br
 
-Como Usar
-==============
+
