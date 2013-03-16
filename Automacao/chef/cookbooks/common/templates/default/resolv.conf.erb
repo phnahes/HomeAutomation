@@ -1,4 +1,0 @@
-search<% node[:common][:dnsdomains].each do |dnsdomain| -%><%= " " + dnsdomain -%><% end %>
-<% node[:common][:nameservers].each do |nameserver| -%>
-nameserver <%= nameserver %>
-<% end -%>
