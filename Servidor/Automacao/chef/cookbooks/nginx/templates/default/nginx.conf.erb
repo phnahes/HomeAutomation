@@ -1,0 +1,64 @@
+#----------------------------------------------------------------------
+# Main Module - directives that cover basic functionality
+#----------------------------------------------------------------------
+user              <%= node[:nginx][:user] %>;
+worker_processes  <%= node[:nginx][:worker_processes] %>;
+
+error_log         /var/log/nginx/error.log;
+#error_log        /var/log/nginx/error.log  info;
+
+pid               /var/run/nginx.pid;
+
+#----------------------------------------------------------------------
+# Events Module 
+#----------------------------------------------------------------------
+events {
+    worker_connections  <%= node[:nginx][:worker_connections] %>;
+    # max_clients = worker_processes * worker_connections
+}
+
+#----------------------------------------------------------------------
+# HTTP Core Module
+#----------------------------------------------------------------------
+http {
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] $request '
+                      '"$status" $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"'
+                      '"$upstream_cache_status"';
+
+    access_log  /var/log/nginx/access.log  main;
+    keepalive_timeout  <%= node[:nginx][:keepalive_timeout] %>;
+    <% if node[:nginx][:tcp_nodelay] == "yes" %>
+    tcp_nodelay on;
+    <% end %>
+    server_tokens off;
+
+    # Cache por padrao declarado, basta ativar no conf.d/*.conf
+    proxy_cache_path  		/data/nginx/cache  levels=1:2 keys_zone=HANGOUT:<%= node[:nginx][:keys_zone_size] %> inactive=24h max_size=512M;
+    proxy_connect_timeout    	5;
+    proxy_read_timeout       	60;
+    proxy_send_timeout       	5;
+    proxy_buffer_size        	16k;
+    proxy_buffers            	4 64k;
+    proxy_busy_buffers_size 	128k;
+    proxy_temp_file_write_size 	128k;
+    proxy_cache_use_stale   	error timeout invalid_header updating http_500 http_502;
+    <% if node[:nginx][:cache_200] == "yes" %>
+    proxy_cache_valid  		200 302 <%= node[:nginx][:cache_valid] %>;
+    <% end %>
+    proxy_cache_valid  		301 1h;
+    proxy_cache_valid  		404 1m;
+    proxy_ignore_client_abort 	on;
+    proxy_ignore_headers 	X-Accel-Redirect X-Accel-Expires Expires Cache-Control;
+    proxy_set_header 		Host $http_host;
+    proxy_set_header 		X-Real-IP  $remote_addr;
+    proxy_set_header 		X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_pass_header 		Set-Cookie;
+    proxy_cache_key 		"$scheme://$host$request_uri";
+
+    include /etc/nginx/conf.d/*.conf;
+
+}

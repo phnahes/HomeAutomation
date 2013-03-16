@@ -1,0 +1,1 @@
+deb http://mirror-ubuntu.nahes.com.br/opscode/ <%= node.lsb.codename %>-0.10 main

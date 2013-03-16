@@ -1,0 +1,17 @@
+# Historico de comandos maior e com data e sincronO
+HISTTIMEFORMAT="%d/%m/%Y %H:%M:%S "
+export HISTCONTROL=ignoreboth
+export PROMPT_COMMAND="history -a"
+export HISTFILESIZE=5000
+shopt -s histappend
+
+# alias uteis
+alias vi="vim"
+alias ll="ls -lh"
+alias logs="grc tail -n 70 -f /var/log/nginx/*.log"
+
+if [ $EUID -eq 0 ]; then
+    readonly TMOUT=3600
+else
+    readonly TMOUT=14400
+fi
