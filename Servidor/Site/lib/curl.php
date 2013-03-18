@@ -34,7 +34,8 @@ function get_web_page( $url,$curl_data )
 	//  $header['errno']   = $err; 
 	//  $header['errmsg']  = $errmsg; 
 	//  $header['content'] = $content; 
-	return $header; 
+	//   return $header; 
+	return $content;
 } 
 
 /*
