@@ -112,8 +112,6 @@ void loop() {
           client.println(temp);
           client.println(";");
 
-          client.println("Dispositivos:<br />");
-
           if(digitalWrite(dev1, HIGH) {client.println("DEV1=1;")}
           else{ client.println("DEV1=0;")};
 
