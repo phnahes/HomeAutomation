@@ -37,7 +37,6 @@ function get_web_page( $url,$curl_data )
 	//   return $header; 
 	return $content;
 } 
-
 /*
 $curl_data = "var1=60&var2=test"; 
 $url = "https://www.example.com"; 
@@ -46,5 +45,4 @@ $response = get_web_page($url,$curl_data);
 print '<pre>'; 
 print_r($response); 
 */
-
 ?>

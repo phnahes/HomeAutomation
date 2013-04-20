@@ -7,7 +7,11 @@
 
 $memcached_host = "localhost";
 $memcached_port = "11211";
-$memcache_obj = memcache_connect("$memcached_host", "$memcached_port");
+
+$Memcached = new Memcached();
+$Memcached->addServer($memcached_host, $memcached_port);
+
+#$memcache_obj = memcache_connect("$memcached_host", "$memcached_port");
 
 ?>
 
