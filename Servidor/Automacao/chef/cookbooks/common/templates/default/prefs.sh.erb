@@ -8,7 +8,7 @@ shopt -s histappend
 # alias uteis
 alias vi="vim"
 alias ll="ls -lh"
-alias logs="grc tail -n 70 -f /var/log/nginx/*.log"
+alias logs="grc tail -n 70 -f /data/logs/tomcat/*log /var/log/tomcat7/catalina.out"
 
 if [ $EUID -eq 0 ]; then
     readonly TMOUT=3600

@@ -5,7 +5,7 @@ template "/etc/nginx/conf.d/hangout.conf" do
 	owner "#{node[:nginx][:user]}"
 	group "#{node[:nginx][:user]}"
 	mode "0644"
-	notifies :reload, resources(:service => "nginx")
+#	notifies :reload, resources(:service => "nginx")
 end
 
 

@@ -2,6 +2,7 @@
 # Cookbook Name:: common
 # Recipe:: staticfiles
 #
+#
 # All rights reserved - Do Not Redistribute
 #
 
