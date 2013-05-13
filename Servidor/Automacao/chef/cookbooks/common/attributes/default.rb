@@ -27,9 +27,9 @@ case platform
     #set[:common][:motd_file] = "/etc/motd.tail"
 end
 
-## Define a cor do bash
-#if hostname == "i-d2032ecf"
-#	set[:common][:prompt] = "33" # Vermelho para Servidor
-#else 
-#	set[:common][:prompt] = "34" # Verde para Pontos
-#end
+# Define a cor do bash
+if hostname == "i-d2032ecf"
+	set[:common][:prompt] = "33" # Vermelho para Servidor
+else 
+	set[:common][:prompt] = "34" # Verde para Pontos
+end

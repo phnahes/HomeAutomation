@@ -1,1 +1,1 @@
-{"run_list":[ "recipe[common]", "recipe[openssh]", "recipe[sudo]", "recipe[nginx::hangout]", "recipe[openssl]","recipe[mysql::server]"]}
+{"run_list":[ "recipe[common]", "recipe[openssh]", "recipe[sudo]", "recipe[nginx::hangout]", "recipe[openssl]"]}
