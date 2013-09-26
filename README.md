@@ -1,12 +1,10 @@
 HomeAutomation
 ==============
 
-Sistema de Automacao Residencial usando um servidor na nuvem e um Arduino em "Standalone" para controle central de dispositivos na residencia.
-
-Maiores informacoes:
-http://paulonahes.blogspot.com.br
+Sistema de Automacao Residencial usando um servidor qualquer na nuvem e Arduino para controle central de dispositivos na residencia.
 
 Como Usar
 ==============
 
 Comando uteis
+==============
